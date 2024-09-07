@@ -3,12 +3,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>user</artifactId>
+    <artifactId>user-service</artifactId>
     <version>${revision}</version>
+    <name>User Service</name>
+    <description>Microservice responsible for managing user accounts, authentication, and authorization.</description>
 
     <parent>
         <groupId>com.playzone</groupId>
-        <artifactId>modules</artifactId>
+        <artifactId>playzone_backend</artifactId>
         <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>

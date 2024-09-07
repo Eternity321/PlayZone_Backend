@@ -4,10 +4,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.playzone</groupId>
-    <artifactId>modules</artifactId>
+    <artifactId>playzone_backend</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
-    <name>PlayZone_Backend</name>
+    <name>PlayZone</name>
     <description>Platform for defining permanent locations and organizing events PlayZone</description>
 
     <modules>
