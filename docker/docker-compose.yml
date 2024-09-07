@@ -1,0 +1,44 @@
+version: '3.8'
+
+networks:
+  backend-playzone:
+    driver: bridge
+
+volumes:
+  keycloak-data:
+    driver: local
+  postgres-user-data:
+    driver: local
+
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: ${KEYCLOAK_CONTAINER_NAME:-keycloak}
+    environment:
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN_USER:-keycloak}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-keycloak}
+    command: start-dev
+    env_file:
+      - ../.env
+    ports:
+      - "8180:8080"
+    volumes:
+      - keycloak-data:/var/lib/keycloak/data
+    networks:
+      - backend-playzone
+
+  postgres:
+    image: postgres:16
+    container_name: ${POSTGRES_CONTAINER_NAME:-postgres}
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-postgres}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    env_file:
+      - ../.env
+    volumes:
+      - postgres-user-data:/var/lib/postgresql/data
+    networks:
+      - backend-playzone

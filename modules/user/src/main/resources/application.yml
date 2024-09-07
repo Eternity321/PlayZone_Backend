@@ -1,0 +1,15 @@
+spring:
+  config:
+    import: optional:file:docker/.env[.properties]
+  datasource:
+    url: jdbc:postgresql://${HOST:localhost}:${POSTGRES_DB_PORT:5432}/${POSTGRES_DB:postgres}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:postgres}
+  jpa:
+    hibernate:
+      ddl-auto: none
+  liquibase:
+    change-log: classpath:liquibase/db.changelog.yml
+    enabled: true
+server:
+  port: 8081
