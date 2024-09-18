@@ -2,13 +2,10 @@ version: '3.8'
 
 networks:
   backend-playzone:
-    driver: bridge
 
 volumes:
   keycloak-data:
-    driver: local
   postgres-user-data:
-    driver: local
 
 services:
   keycloak:
@@ -19,7 +16,7 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-keycloak}
     command: start-dev
     env_file:
-      - ../.env
+      - .env
     ports:
       - "8180:8080"
     volumes:
@@ -37,7 +34,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
     env_file:
-      - ../.env
+      - .env
     volumes:
       - postgres-user-data:/var/lib/postgresql/data
     networks:

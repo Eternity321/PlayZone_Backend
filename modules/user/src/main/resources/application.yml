@@ -11,5 +11,16 @@ spring:
   liquibase:
     change-log: classpath:liquibase/db.changelog.yml
     enabled: true
+
+
+keycloak:
+  openid-connect-url: ${OPENID_URL_USER:http://localhost:8180/realms/PlayZone/.well-known/openid-configuration}
+  url: ${KEYCLOACK_HOST:http://localhost:8180}
+  realm: ${REALM_NAME:}
+  clientId: ${CLIENT_ID:}
+  clientSecret: ${CLIENT_SECRET:}
+  username: ${KEYCLOAK_USERNAME:}
+  password: ${KEYCLOAK_PASSWORD:}
+
 server:
   port: 8081

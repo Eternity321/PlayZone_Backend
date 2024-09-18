@@ -1,8 +1,8 @@
-package com.playzone.user.web.controller;
+package com.playzone.user.api.controller;
 
-import com.playzone.user.model.user;
-import com.playzone.user.web.dto.UserDto;
-import com.playzone.user.web.mapper.UserMapper;
+import com.playzone.user.api.dto.request.UserRequest;
+import com.playzone.user.model.User;
+import com.playzone.user.api.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,8 +18,8 @@ public class UserController {
     private final UserMapper userMapper;
 
     @PostMapping("/create")
-    public void create(@RequestBody UserDto dto) {
-        user user = userMapper.toEntity(dto);
+    public void create(@RequestBody UserRequest dto) {
+        User user = userMapper.toEntity(dto);
     }
 
 }
