@@ -14,13 +14,13 @@ spring:
 
 
 keycloak:
-  openid-connect-url: ${OPENID_URL_USER:http://localhost:8180/realms/PlayZone/.well-known/openid-configuration}
-  url: ${KEYCLOACK_HOST:http://localhost:8180}
-  realm: ${REALM_NAME:}
-  clientId: ${CLIENT_ID:}
-  clientSecret: ${CLIENT_SECRET:}
-  username: ${KEYCLOAK_USERNAME:}
-  password: ${KEYCLOAK_PASSWORD:}
+  openid-connect-url: ${KEYCLOAK_OPENID_URL_USER}
+  url: ${KEYCLOACK_HOST}
+  realm: ${KEYCLOACK_REALM_NAME}
+  clientId: ${KEYCLOACK_CLIENT_ID}
+  clientSecret: ${KEYCLOAK_CLIENT_SECRET}
+  username: ${KEYCLOAK_ADMIN_USER}
+  password: ${KEYCLOAK_ADMIN_PASSWORD}
 
 server:
   port: 8081
