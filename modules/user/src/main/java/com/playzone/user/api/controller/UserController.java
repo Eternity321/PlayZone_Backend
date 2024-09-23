@@ -3,16 +3,20 @@ package com.playzone.user.api.controller;
 import com.playzone.user.api.dto.request.PasswordUpdateRequest;
 import com.playzone.user.api.dto.request.UserRequest;
 import com.playzone.user.api.dto.response.ListUserResponse;
+import com.playzone.user.api.dto.response.UserResponse;
 import com.playzone.user.model.User;
 import com.playzone.user.service.UserService;
 import com.playzone.user.util.JwtParser;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -38,12 +42,24 @@ public class UserController {
     @ApiResponses(value = {
         @ApiResponse(
             responseCode = "200",
-            description = "Пользователь зарегистрирован")
+            description = "Пользователь успешно зарегистрирован",
+            content = @Content(mediaType = "application/json",
+                               schema = @Schema(implementation = UserResponse.class))
+        ),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Ошибка валидации данных пользователя"
+        )
     })
-    @ResponseStatus(HttpStatus.OK)
     @PostMapping("auth/create")
-    public void addUser(@RequestBody @Valid UserRequest userRequest) {
+    public ResponseEntity<UserResponse> addUser(@RequestBody @Valid UserRequest userRequest) {
         userService.createUser(userRequest);
+
+        return ResponseEntity.ok(new UserResponse(
+            userRequest.email(),
+            userRequest.firstName(),
+            userRequest.lastName()
+        ));
     }
 
     @Operation(summary = "Получить всех пользователей")

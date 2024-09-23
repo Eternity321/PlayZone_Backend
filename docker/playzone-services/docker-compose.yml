@@ -1,0 +1,68 @@
+networks:
+  backend-playzone:
+    name: backend-playzone
+    driver: bridge
+
+volumes:
+  keycloak-data:
+  postgres-user-data:
+  user-service-data:
+
+services:
+  postgres-user:
+    image: postgres:16
+    container_name: postgres-user
+    ports:
+      - ":5432"
+    env_file:
+      - .env
+    volumes:
+      - postgres-user-data:/var/lib/postgresql/data
+    networks:
+      - backend-playzone
+
+#  liquibase-migrations-user:
+#    image: liquibase/liquibase:4.29.2
+#    container_name: migrations-user
+#    depends_on:
+#      - postgres-user
+#    command:
+#      - --changelog-file=${LIQUIBASE_CHANGELOG_FILE}
+#      - --driver=${LIQUIBASE_DB_DRIVER}
+#      - --url=${LIQUIBASE_DB_URL}
+#      - --username=${LIQUIBASE_DB_USERNAME}
+#      - --password=${LIQUIBASE_DB_PASSWORD}
+#      - update
+#    volumes:
+#      - ./resources_user/db.changelog:/liquibase/changelog
+#    networks:
+#      - backend-playzone
+
+  user-service:
+    container_name: user-service
+    build:
+      context: ../../modules/user
+      dockerfile: ../../modules/user/user.Dockerfile
+    ports:
+      - "8087:8087"
+    depends_on:
+      - postgres-user
+    env_file:
+      - .env
+    volumes:
+      - user-service-data:/var/lib/user-service/data
+    networks:
+      - backend-playzone
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres-user
+    networks:
+      - backend-playzone

@@ -1,0 +1,36 @@
+networks:
+  backend-playzone:
+    name: backend-playzone
+    driver: bridge
+    external: true
+
+volumes:
+  keycloak-data:
+    name: keycloak-data
+
+services:
+  keycloak-db:
+    image: postgres:16
+    container_name: ${KEYCLOAK_DB_CONTAINER_NAME:-keycloak_postgres}
+    env_file:
+      - .env
+    ports:
+      - ":5432"
+    networks:
+      - backend-playzone
+    volumes:
+      - keycloak-data:/var/lib/postgresql/data
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0
+    container_name: ${KEYCLOAK_CONTAINER_NAME:-keycloak}
+    depends_on:
+      - keycloak-db
+    command:
+      - start-dev
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+    networks:
+      - backend-playzone

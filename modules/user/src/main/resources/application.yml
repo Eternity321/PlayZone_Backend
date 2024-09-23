@@ -1,26 +1,43 @@
 spring:
   config:
-    import: optional:file:docker/.env[.properties]
+    import: optional:file:docker/playzone-services/.env
+
   datasource:
     url: jdbc:postgresql://${HOST:localhost}:${POSTGRES_DB_PORT:5432}/${POSTGRES_DB:postgres}
     username: ${POSTGRES_USER:postgres}
     password: ${POSTGRES_PASSWORD:postgres}
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_ISSUER_URI}
+
   jpa:
     hibernate:
       ddl-auto: none
+
   liquibase:
     change-log: classpath:liquibase/db.changelog.yml
     enabled: true
 
+app:
+  base-swagger-url: ${SWAGGER_URL:http://localhost:8087}
+
+springdoc:
+  swagger-ui:
+    oauth:
+      client-id: PlayZone
+      client-secret: ${KEYCLOAK_CLIENT_SECRET}
 
 keycloak:
   openid-connect-url: ${KEYCLOAK_OPENID_URL_USER}
-  url: ${KEYCLOACK_HOST}
-  realm: ${KEYCLOACK_REALM_NAME}
-  clientId: ${KEYCLOACK_CLIENT_ID}
+  url: ${KEYCLOAK_HOST}
+  realm: ${KEYCLOAK_REALM_NAME}
+  clientId: ${KEYCLOAK_CLIENT_ID}
   clientSecret: ${KEYCLOAK_CLIENT_SECRET}
   username: ${KEYCLOAK_ADMIN_USER}
   password: ${KEYCLOAK_ADMIN_PASSWORD}
 
 server:
-  port: 8081
+  port: 8087
